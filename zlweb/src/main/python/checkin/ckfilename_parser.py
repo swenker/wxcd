@@ -77,8 +77,8 @@ def save_distinct_byday(filename,db,cursor):
 
     dtstr=filename.split("_")[-1]
     try:
-        base_sqls= "INSERT INTO "+TABLE_UNIQUE_DEVICE_ID_BYDAY +"(deviceid,event_date) SELECT DISTINCT deviceid FROM "+TABLE_DEVICE_ID+" WHERE date_format(event_datetime,'%%Y-%%m-%%d')='%s'" %dtstr
-        cursor.execute(base_sqls)
+        base_sqls= "INSERT INTO "+TABLE_UNIQUE_DEVICE_ID_BYDAY +"(deviceid,event_date) SELECT DISTINCT deviceid,'%s' FROM "+TABLE_DEVICE_ID+" WHERE date_format(event_datetime,'%%Y-%%m-%%d')='%s'"
+        cursor.execute((base_sqls %(dtstr,dtstr)))
 
     except BaseException,e:
         print e
@@ -91,8 +91,9 @@ def handle_all_files():
 
     # files = ['ckfilelist_2016-10-18','ckfilelist_2016-10-19','ckfilelist_2016-10-20']
     #files = ['ckfilelist_2016-10-21','ckfilelist_2016-10-22','ckfilelist_2016-10-23']
-    files = ['ckfilelist_2016-10-24','ckfilelist_2016-10-25','ckfilelist_2016-10-26']
+    # files = ['ckfilelist_2016-10-24','ckfilelist_2016-10-25','ckfilelist_2016-10-26']
     files = ['ckfilelist_2016-10-27','ckfilelist_2016-10-28','ckfilelist_2016-10-29','ckfilelist_2016-10-30']
+    files = ['ckfilelist_2016-10-31','ckfilelist_2016-11-01']
     # print files
     db = MySQLdb.connect(host="localhost",user="indigo",passwd="indigopwd",db="api_log",charset="utf8")
     try:
@@ -113,3 +114,6 @@ def handle_all_files():
 if __name__=="__main__":
     # handle_single_file("/home/wenjusun/logs/mytest",None,None)
     handle_all_files()
+    #dtstr='2016-10-31'
+    #base_sqls= "INSERT INTO "+TABLE_UNIQUE_DEVICE_ID_BYDAY +"(deviceid,event_date) SELECT DISTINCT deviceid,'%s' FROM "+TABLE_DEVICE_ID+" WHERE date_format(event_datetime,'%%Y-%%m-%%d')='%s'"
+    #print base_sqls %(dtstr,dtstr)
