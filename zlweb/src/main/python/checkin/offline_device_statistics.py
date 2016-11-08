@@ -60,9 +60,10 @@ def newdevice_byday(cursor,current_date):
 
 def statistics():
     cursor = db.cursor()
-    dtstr = "2016-11-01"
-    newdevice_byday(cursor,dtstr)
-    device_counter_byday(cursor,dtstr)
+
+    for dtstr in ["2016-11-02","2016-11-03","2016-11-04","2016-11-05"]:
+        newdevice_byday(cursor,dtstr)
+        device_counter_byday(cursor,dtstr)
     cursor.close()
     db.close()
 

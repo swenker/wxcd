@@ -1,14 +1,11 @@
 package com.wxcd.yc.repository;
 
+import com.wxcd.yc.DateRangeObject;
 import com.wxcd.yc.model.DeviceCounter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,7 +13,7 @@ import java.util.List;
  */
 
 @Repository
-public class CheckinDataRepositoryImpl implements CheckinDataRepository{
+public class CheckinDataRepositoryImpl implements CheckinDataRepository {
 
 
     private JdbcTemplate jdbcTemplate;
@@ -27,11 +24,22 @@ public class CheckinDataRepositoryImpl implements CheckinDataRepository{
 
     }
 
+    private List<DeviceCounter> getDeviceCountersList(String sql){
+        return jdbcTemplate.query(sql, (resultSet, rowNum) -> {
+            return DeviceCounter.Builder.create()
+                    .setAllCounter(resultSet.getInt("all_counter"))
+                    .setUniqueCounter(resultSet.getInt("unique_counter"))
+                    .setEventDate(resultSet.getString("event_date"))
+                    .build();
+        });
+    }
+
     @Override
     public List<DeviceCounter> getDeviceCounters() {
 
         String sql = "SELECT event_date,all_counter,unique_counter FROM devices_counter_byday ORDER BY event_date";
 
+/*
         RowMapper<DeviceCounter> rowMapper = new RowMapper<DeviceCounter>() {
             @Override
             public DeviceCounter mapRow(ResultSet resultSet, int i) throws SQLException {
@@ -46,10 +54,35 @@ public class CheckinDataRepositoryImpl implements CheckinDataRepository{
         };
 
         List<DeviceCounter> counters = jdbcTemplate.query(sql,rowMapper);
+*/
+
 
 
 //        counters.stream().forEach(System.out::println);
 
-        return counters;
+        return this.getDeviceCountersList(sql);
+    }
+
+
+    @Override
+    public List<DeviceCounter> getDeviceCountersOfMonth(String yearMonth) {
+
+        String sql = "SELECT event_date,all_counter,unique_counter FROM devices_counter_byday WHERE DATE_FORMAT(event_date,'%Y-%m') LIKE '"+yearMonth+"%' ORDER BY event_date";
+
+        return this.getDeviceCountersList(sql);
+
+    }
+
+    @Override
+    public List<DeviceCounter> getDeviceCountersOfDateRange(DateRangeObject dateRange) {
+
+//        System.out.println(dateRange);
+        String sql = "SELECT event_date,all_counter,unique_counter FROM devices_counter_byday WHERE DATE_FORMAT(event_date,'%Y-%m-%d')>='"+dateRange.getStartDate()
+                +"' AND DATE_FORMAT(event_date,'%Y-%m-%d') <='"
+                +dateRange.getEndDate()
+                +"' ORDER BY event_date";
+
+        System.out.println(sql);
+        return this.getDeviceCountersList(sql);
     }
 }

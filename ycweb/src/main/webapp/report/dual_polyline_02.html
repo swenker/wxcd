@@ -94,17 +94,19 @@ var svg = d3.select("body").append("svg")
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-d3.json("devices_counter_all_unique.json", function(error, data) {
+d3.json("/ycweb-1.0/ckp/all", function(error, data) {
   if (error) throw error;
 
-  var counterNames = d3.keys(data[0]).filter(function(key) { return key !== "date"; });
+  data = data.dclist;
+
+  var counterNames = d3.keys(data[0]).filter(function(key) { return key !== "eventDate"; });
 
   data.forEach(function(d) {
     d.counters = counterNames.map(function(name) { return {name: name, value: +d[name]}; });
   });
 
 
-  x0.domain(data.map(function(d) { return d.date; }));
+  x0.domain(data.map(function(d) { return d.eventDate; }));
   y0.domain([0, d3.max(data, function(d) { return d3.max(d.counters, function(d) { return d.value; }); })]);
 
   svg.append("g")
@@ -134,22 +136,22 @@ d3.json("devices_counter_all_unique.json", function(error, data) {
       .data(data)
       .enter().append("g")
       .attr("class", "state")
-      .attr("transform", function(d) { return "translate(" + x0(d.date) + ",0)"; })
+      .attr("transform", function(d) { return "translate(" + x0(d.eventDate) + ",0)"; })
 	  ;
 
 
     var line1 = d3.svg.line()
         .x(function(d) {
-            //console.log('Plotting X1 value for data point: ' + d + ' using index: ' + i + ' to be at: ' + x0(d.date) + ' using our xScale.');
-            //console.log('Plotting X1 value for data point: ' + d + '   to be at: ' + x0(d.date) + ' using our xScale.');
+            //console.log('Plotting X1 value for data point: ' + d + ' using index: ' + i + ' to be at: ' + x0(d.eventDate) + ' using our xScale.');
+            //console.log('Plotting X1 value for data point: ' + d + '   to be at: ' + x0(d.eventDate) + ' using our xScale.');
 			//console.log(x0(d));
-            return x0(d.date);
+            return x0(d.eventDate);
         })
         .y(function(d) {
             // verbose logging to show what's actually being done
-            //console.log('Plotting Y1 value for data point: ' +'' + ' to be at: ' + y0(d.unique) + " using our y1Scale.");
+            //console.log('Plotting Y1 value for data point: ' +'' + ' to be at: ' + y0(d.uniqueCounter) + " using our y1Scale.");
             // return the Y coordinate where we want to plot this datapoint
-            return y0(d.unique);
+            return y0(d.uniqueCounter);
         })
 
     // create a line function that can convert data[] into x and y points
@@ -157,13 +159,13 @@ d3.json("devices_counter_all_unique.json", function(error, data) {
         .x(function(d) {
             //console.log('Plotting X2 value for data point: ' + d + ' using index: ' + i + ' to be at: ' + x(i) + ' using our xScale.');
             // return the X coordinate where we want to plot this datapoint
-            return x0(d.date);
+            return x0(d.eventDate);
         })
         .y(function(d) {
             // verbose logging to show what's actually being done
             //console.log('Plotting Y2 value for data point: ' + d + ' to be at: ' + y2(d) + " using our y2Scale.");
             // return the Y coordinate where we want to plot this datapoint
-            return y0(d.all);
+            return y0(d.allCounter);
 			})
 
     // add lines
@@ -175,15 +177,15 @@ d3.json("devices_counter_all_unique.json", function(error, data) {
     var circle0 = svg.selectAll("circle")
           .data(data)
           .enter().append("circle")
-          .attr("cx", function(d, i) { return x0(d.date); })
-          .attr("cy", function(d, i) { return y0(d.all); })
+          .attr("cx", function(d, i) { return x0(d.eventDate); })
+          .attr("cy", function(d, i) { return y0(d.allCounter); })
           .attr("r", 3);
 
     var circle1 = svg.selectAll("circle1")
           .data(data)
           .enter().append("circle")
-          .attr("cx", function(d) { return x0(d.date); })
-          .attr("cy", function(d) { return y0(d.unique); })
+          .attr("cx", function(d) { return x0(d.eventDate); })
+          .attr("cy", function(d) { return y0(d.uniqueCounter); })
           .attr("r", 3);
 
 ////////////////////////
@@ -191,15 +193,15 @@ d3.json("devices_counter_all_unique.json", function(error, data) {
     svg.selectAll("circle.text0")
           .data(data)
           .enter().append("text")
-          .attr("x", function(d) { return x0(d.date); })
-          .attr("y", function(d) { return y0(d.all); })
+          .attr("x", function(d) { return x0(d.eventDate); })
+          .attr("y", function(d) { return y0(d.allCounter); })
           .text(function(d) { return d.all; });
 
     svg.selectAll("circle.text1")
           .data(data)
           .enter().append("text")
-          .attr("x", function(d) { return x0(d.date); })
-          .attr("y", function(d) { return y0(d.unique); })
+          .attr("x", function(d) { return x0(d.eventDate); })
+          .attr("y", function(d) { return y0(d.uniqueCounter); })
           .text(function(d) { return d.unique; });
 
 

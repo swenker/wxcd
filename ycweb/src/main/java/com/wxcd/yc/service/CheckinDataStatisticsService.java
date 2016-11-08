@@ -9,4 +9,11 @@ import java.util.List;
  */
 public interface CheckinDataStatisticsService {
     public List<DeviceCounter> getAllDeviceCounters();
+
+    public List<DeviceCounter> getDeviceCountersOfMonth(String yearMonth);
+
+    public List<DeviceCounter> getDeviceCountersByWeek(String dateStr);
+//    public List<DeviceCounter> getDeviceCountersByDay(String dateStr);
+
+
 }

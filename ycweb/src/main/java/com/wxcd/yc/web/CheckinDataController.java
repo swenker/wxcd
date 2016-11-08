@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 
 @Controller
+@RequestMapping("/ck")
 public class CheckinDataController {
 
     @Autowired

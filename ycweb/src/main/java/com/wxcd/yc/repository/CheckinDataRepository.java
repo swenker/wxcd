@@ -1,5 +1,6 @@
 package com.wxcd.yc.repository;
 
+import com.wxcd.yc.DateRangeObject;
 import com.wxcd.yc.model.DeviceCounter;
 
 import java.util.List;
@@ -9,5 +10,11 @@ import java.util.List;
  */
 public interface CheckinDataRepository {
     public List<DeviceCounter> getDeviceCounters();
+
+    public List<DeviceCounter> getDeviceCountersOfMonth(String yearMonth);
+
+    public List<DeviceCounter> getDeviceCountersOfDateRange(DateRangeObject dateRange);
+
+
 
 }
