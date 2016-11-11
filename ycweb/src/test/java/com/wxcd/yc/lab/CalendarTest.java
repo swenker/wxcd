@@ -1,5 +1,6 @@
 package com.wxcd.yc.lab;
 
+import com.wxcd.yc.DatetimeUtil;
 import org.junit.Test;
 
 import java.time.DayOfWeek;
@@ -39,6 +40,17 @@ public class CalendarTest {
         System.out.println(ld.with(weekdayField,7));
 
         System.out.println(ld.with(weekyearField,1));
+
+    }
+
+
+    @Test
+    public void testLocalDateUtils(){
+        System.out.println(DatetimeUtil.getDayInLastWeek());
+        System.out.println(DatetimeUtil.getToday());
+        System.out.println(DatetimeUtil.getYesterday());
+
+        System.out.println(DatetimeUtil.getThisMonth());
 
     }
 }

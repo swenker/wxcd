@@ -41,7 +41,27 @@ public class CheckinReportControllerTest {
 
         mockMvc.perform(get("/ckp/counterbyday?dt=abc").accept(MediaType.parseMediaType("application/json;charset=UTF-8")))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.TEXT_HTML));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().string("abc"))
+        ;
 
+    }
+    @Test
+    public void testGetWeekCountersByDay()throws Exception{
+
+        mockMvc.perform(get("/ckp/weekcounterbyday?dt=2016-11-01").accept(MediaType.parseMediaType("application/json;charset=UTF-8")))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().string("abc"))
+        ;
+    }
+
+    @Test
+    public void testGetMenuList() throws Exception{
+        mockMvc.perform(get("/ckp/menu").accept(MediaType.parseMediaType(MediaType.APPLICATION_JSON_UTF8_VALUE)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().string("abc"))
+                ;
     }
 }

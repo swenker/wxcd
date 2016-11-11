@@ -27,7 +27,7 @@ public class CheckinDataStatisticsServiceImpl implements CheckinDataStatisticsSe
     }
 
     @Override
-    public List<DeviceCounter> getDeviceCountersOfMonth(String yearMonth) {
+    public List<DeviceCounter> getDeviceCountersByMonth(String yearMonth) {
 
         return checkinDataRepository.getDeviceCountersOfMonth(yearMonth);
     }
@@ -37,5 +37,10 @@ public class CheckinDataStatisticsServiceImpl implements CheckinDataStatisticsSe
 
         return checkinDataRepository.getDeviceCountersOfDateRange(DatetimeUtil.getWeekRange(dateStr));
 
+    }
+
+    @Override
+    public List<DeviceCounter> getDeviceCountersByDay(String dateStr) {
+        return checkinDataRepository.getDeviceCountersOfDay(dateStr);
     }
 }

@@ -37,7 +37,7 @@ public class CheckinDataServiceTest {
 
 //    @Test
     public void testGetDeviceCountersOfMonth(){
-        List<DeviceCounter> dclist = checkinDataStatisticsService.getDeviceCountersOfMonth("2016-11");
+        List<DeviceCounter> dclist = checkinDataStatisticsService.getDeviceCountersByMonth("2016-11");
 
         dclist.forEach(System.out::println);
 

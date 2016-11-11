@@ -1,5 +1,6 @@
 package com.wxcd.yc.web;
 
+import com.wxcd.yc.DatetimeUtil;
 import com.wxcd.yc.model.DeviceCounter;
 import com.wxcd.yc.service.CheckinDataStatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,8 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,11 +26,19 @@ public class CheckinReportController {
     @Autowired
     private CheckinDataStatisticsService checkinDataStatisticsService;
 
-    @RequestMapping(value = "/allunique",method = RequestMethod.GET,produces = "application/json")
-    public List<DeviceCounter> getAllAndUniqueCounter(){
 
-        return checkinDataStatisticsService.getAllDeviceCounters();
+    @RequestMapping(value="/menu",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<MenuList>getMenuList(HttpServletRequest httpRequest){
+        List<MenuItem> menuItemList = new ArrayList<>();
+        String contextPath = httpRequest.getContextPath();
+        menuItemList.add(new MenuItem("Yesterday",contextPath+"/ckp/"+"counterbyday?dt="+ DatetimeUtil.getYesterday()));
+        menuItemList.add(new MenuItem("This Week",contextPath+"/ckp/"+"weekcounterbyday?dt="+ DatetimeUtil.getToday()));
+        menuItemList.add(new MenuItem("Last Week",contextPath+"/ckp/"+"weekcounterbyday?dt="+ DatetimeUtil.getDayInLastWeek()));
+        menuItemList.add(new MenuItem("This Month",contextPath+"/ckp/"+"monthcounter?dt="+ DatetimeUtil.getThisMonth()));
+
+        return new ResponseEntity<>(new MenuList(menuItemList),HttpStatus.OK);
     }
+
 
     @RequestMapping(value = "/all",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<DeviceCounterListVO> getAllAndUniqueCounters(){
@@ -37,9 +48,26 @@ public class CheckinReportController {
     }
 
     @RequestMapping(value = "/counterbyday", method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<String> getAllAndUniqueCountersByDay(@RequestParam(name="dt",required = false) String dt) {
+    public ResponseEntity<DeviceCounterListVO> getAllAndUniqueCountersOfDay(@RequestParam(name="dt",required = false) String dt) {
 
-        return new ResponseEntity<String>(dt,HttpStatus.OK);
+        List<DeviceCounter>dclist= checkinDataStatisticsService.getDeviceCountersByDay(dt);
+
+        return new ResponseEntity<>(new DeviceCounterListVO(dclist),HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/weekcounterbyday", method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<DeviceCounterListVO> getAllAndUniqueCountersOfWeek(@RequestParam(name="dt",required = false) String dt) {
+
+        List<DeviceCounter>dclist= checkinDataStatisticsService.getDeviceCountersByWeek(dt);
+
+        return new ResponseEntity<>(new DeviceCounterListVO(dclist),HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/monthcounter", method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+//    public ResponseEntity<String> getAllAndUniqueCountersOfMonth(@RequestParam(name="dt",required = false) String dt) {
+    public ResponseEntity<DeviceCounterListVO> getAllAndUniqueCountersOfMonth(@RequestParam String dt) {
+        List<DeviceCounter>dclist= checkinDataStatisticsService.getDeviceCountersByMonth(dt);
+        return new ResponseEntity<>(new DeviceCounterListVO(dclist),HttpStatus.OK);
     }
 
     class DeviceCounterListVO{
@@ -51,6 +79,43 @@ public class CheckinReportController {
 
         public List<DeviceCounter> getDclist() {
             return dclist;
+        }
+    }
+
+    class MenuItem{
+        private String name;
+        private String link;
+
+        public MenuItem(String name, String link) {
+            this.name = name;
+            this.link = link;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getLink() {
+            return link;
+        }
+
+        @Override
+        public String toString() {
+            return "MenuItem{" +
+                    "name='" + name + '\'' +
+                    ", link='" + link + '\'' +
+                    '}';
+        }
+    }
+    class MenuList{
+        private List<MenuItem> menuItemList;
+
+        public MenuList(List<MenuItem> menuItemList) {
+            this.menuItemList = menuItemList;
+        }
+
+        public List<MenuItem> getMenuItemList() {
+            return menuItemList;
         }
     }
 

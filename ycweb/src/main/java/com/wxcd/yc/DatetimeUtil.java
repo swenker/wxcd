@@ -11,17 +11,41 @@ import java.time.temporal.WeekFields;
  */
 public class DatetimeUtil {
 
-    public static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    public static DateTimeFormatter yyyyMMddFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    public static DateTimeFormatter yyyyMMFormatter = DateTimeFormatter.ofPattern("yyyy-MM");
     public static DateRangeObject getWeekRange(String dateStr){
-        LocalDate localDate = LocalDate.parse(dateStr,dateTimeFormatter);
+        LocalDate localDate = LocalDate.parse(dateStr, yyyyMMddFormatter);
 
         //4 is ISO compatible
         TemporalField weekdayField = WeekFields.of(DayOfWeek.MONDAY, 4).dayOfWeek();
 
         return new DateRangeObject(
-                localDate.with(weekdayField,1).format(dateTimeFormatter),
-                localDate.with(weekdayField,7).format(dateTimeFormatter)
+                localDate.with(weekdayField,1).format(yyyyMMddFormatter),
+                localDate.with(weekdayField,7).format(yyyyMMddFormatter)
         );
+    }
 
+    public static String getToday(){
+        LocalDate localDate = LocalDate.now();
+
+        return localDate.format(yyyyMMddFormatter);
+    }
+
+    public static String getYesterday(){
+        LocalDate localDate = LocalDate.now().minusDays(1);
+
+        return localDate.format(yyyyMMddFormatter);
+    }
+
+
+    public static String getDayInLastWeek(){
+        LocalDate localDate = LocalDate.now().minusDays(7);
+        return localDate.format(yyyyMMddFormatter);
+    }
+
+    public static String getThisMonth(){
+        LocalDate localDate = LocalDate.now();
+
+        return localDate.format(yyyyMMFormatter);
     }
 }

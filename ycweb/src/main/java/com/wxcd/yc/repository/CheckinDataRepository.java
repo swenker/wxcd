@@ -15,6 +15,8 @@ public interface CheckinDataRepository {
 
     public List<DeviceCounter> getDeviceCountersOfDateRange(DateRangeObject dateRange);
 
+    public List<DeviceCounter> getDeviceCountersOfDay(String dtstr);
+
 
 
 }
