@@ -64,6 +64,7 @@ def statistics():
     dtlist=["2016-11-06","2016-11-07","2016-11-08"]
     dtlist=["2016-11-09","2016-11-10"]
     dtlist=["2016-11-11","2016-11-12","2016-11-13"]
+    dtlist=["2016-11-14"]
 
     for dtstr in dtlist:
         newdevice_byday(cursor,dtstr)
