@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { MenuComponent } from './menu.component';
-import { AllUniqueComponent } from './all-unique.component';
+import { AreaChartComponent } from './area-chart.component';
 
 @NgModule({
   imports:[
@@ -20,10 +20,6 @@ import { AllUniqueComponent } from './all-unique.component';
       {
         path: "menu",
         component: MenuComponent
-      },
-      {
-        path: "auplot",
-        component: AllUniqueComponent
       }
     ])
   ],
@@ -31,7 +27,7 @@ import { AllUniqueComponent } from './all-unique.component';
   declarations: [
     AppComponent,
     MenuComponent,
-    AllUniqueComponent
+    AreaChartComponent
    ],
 
   bootstrap:    [ AppComponent ]
