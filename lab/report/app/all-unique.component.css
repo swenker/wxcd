@@ -1,0 +1,60 @@
+    /* tell the SVG path to be a thin blue line without any area fill */
+    path {
+        stroke-width: 1;
+        fill: none;
+    }
+
+    .data1 {
+        /*stroke: steelblue;*/
+        stroke: #ff8c00;
+    }
+
+    .data2 {
+        /*#stroke: orange;*/
+        stroke: #a05d56;
+    }
+
+    .axis {
+      shape-rendering: crispEdges;
+      display: block;
+    }
+
+    .x.axis line {
+      stroke: lightgrey;
+    }
+
+    .x.axis .minor {
+      stroke-opacity: .5;
+    }
+
+    .x.axis path {
+      display: block;
+    }
+
+    .x.axis text {
+        font: 12px Arial;
+    }
+
+    .y.axis line, .y.axis path {
+      fill: none;
+      stroke: #000;
+    }
+
+    .y.axis text {
+        font: 12px Arial;
+    }
+
+    .y.axisRight text {
+        fill: orange;
+    }
+
+    .y.axisLeft text {
+        fill: steelblue;
+    }
+
+
+    circle {
+      fill: #ccc;
+      stroke: #777;
+      stroke-width: 1px;
+    }
