@@ -96,7 +96,8 @@ def handle_all_files():
     #files = ['ckfilelist_2016-10-31','ckfilelist_2016-11-01']
     # files = ['ckfilelist_2016-11-02','ckfilelist_2016-11-03','ckfilelist_2016-11-04','ckfilelist_2016-11-05']
     # files = ['ckfilelist_2016-11-06','ckfilelist_2016-11-07','ckfilelist_2016-11-08']
-    files = ['ckfilelist_2016-11-09','ckfilelist_2016-11-10']
+    # files = ['ckfilelist_2016-11-09','ckfilelist_2016-11-10']
+    files = ['ckfilelist_2016-11-11','ckfilelist_2016-11-12','ckfilelist_2016-11-13']
     # print files
     db = MySQLdb.connect(host="localhost",user="indigo",passwd="indigopwd",db="api_log",charset="utf8")
     try:
