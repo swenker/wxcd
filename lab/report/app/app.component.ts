@@ -21,4 +21,7 @@ import  { Component } from '@angular/core';
 /*Component class controls the appearance and behavior of a view through it's template. */
 export class AppComponent {
   title = "Reporting System" ;
+
+
+
 }

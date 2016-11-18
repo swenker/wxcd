@@ -2,7 +2,6 @@ __author__ = 'wenjusun'
 
 import MySQLdb
 
-
 TABLE_PAST="m_deviceid_tmp_past"
 TABLE_CURRENT="m_deviceid_tmp_current"
 TABLE_DEVICES_COUNTER_BYDAY="devices_counter_byday"
@@ -65,6 +64,17 @@ def statistics():
     dtlist=["2016-11-09","2016-11-10"]
     dtlist=["2016-11-11","2016-11-12","2016-11-13"]
     dtlist=["2016-11-14"]
+    dtlist=["2016-11-15","2016-11-16"]
+
+    for dtstr in dtlist:
+        newdevice_byday(cursor,dtstr)
+        device_counter_byday(cursor,dtstr)
+    cursor.close()
+    db.close()
+
+def statistics2(dts):
+    cursor = db.cursor()
+    dtlist=[dts]
 
     for dtstr in dtlist:
         newdevice_byday(cursor,dtstr)
@@ -75,4 +85,7 @@ def statistics():
 #for dt in range(27,31):
 #    newdevice_byday('2016-10-%s' % str(dt))
 
-statistics()
+if __name__=="__main__":
+    import sys
+    dts = sys.argv[1]
+    statistics2(dts)

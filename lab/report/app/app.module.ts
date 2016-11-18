@@ -10,24 +10,27 @@ import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { MenuComponent } from './menu.component';
-import { AreaChartComponent } from './area-chart.component';
+import { BarChartComponent } from "./bar-chart.component";
+import { DeviceCounterComponent} from "./device-counter.component";
+
 
 @NgModule({
   imports:[
     BrowserModule,
-    FormsModule,
+    FormsModule/*,
     RouterModule.forRoot([
       {
         path: "menu",
         component: MenuComponent
       }
-    ])
+    ])*/
   ],
 
   declarations: [
     AppComponent,
     MenuComponent,
-    AreaChartComponent
+    BarChartComponent,
+    DeviceCounterComponent
    ],
 
   bootstrap:    [ AppComponent ]

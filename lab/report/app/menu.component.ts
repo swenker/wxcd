@@ -1,5 +1,5 @@
 
-import { Component } from "@angular/core"
+import { Component } from "@angular/core";
 
 
 /*  */
@@ -7,10 +7,7 @@ import { Component } from "@angular/core"
   /** This enable module-relative loading of templateUrl*/
   moduleId: module.id,
   selector: 'my-menu',
-
-  templateUrl : 'menu.component.html',
-
-
+  templateUrl : 'menu.component.html'
 })
 
 

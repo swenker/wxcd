@@ -99,6 +99,27 @@ def handle_all_files():
     # files = ['ckfilelist_2016-11-09','ckfilelist_2016-11-10']
     files = ['ckfilelist_2016-11-11','ckfilelist_2016-11-12','ckfilelist_2016-11-13']
     files = ['ckfilelist_2016-11-14']
+    files = ['ckfilelist_2016-11-15','ckfilelist_2016-11-16']
+    # print files
+    db = MySQLdb.connect(host="localhost",user="indigo",passwd="indigopwd",db="api_log",charset="utf8")
+    try:
+        cursor = db.cursor()
+
+        for filename in files:
+            print filename,
+            handle_single_file(("%s/%s" %(current_dir,filename)),db,cursor)
+            # handle_single_file("/home/wenjusun/logs/ckfilelist_2016-10-07",db,cursor)
+
+            print
+
+        cursor.close()
+    except BaseException,e:
+        db.close()
+
+def handle_all_files2(dts):
+    #list dir
+    current_dir = "/home/wenjusun/logs"
+    files = ['ckfilelist_'+dts]
     # print files
     db = MySQLdb.connect(host="localhost",user="indigo",passwd="indigopwd",db="api_log",charset="utf8")
     try:
@@ -118,7 +139,10 @@ def handle_all_files():
 
 if __name__=="__main__":
     # handle_single_file("/home/wenjusun/logs/mytest",None,None)
-    handle_all_files()
+    import sys
+    dts = sys.argv[1]
+
+    handle_all_files2(dts)
     #dtstr='2016-10-31'
     #base_sqls= "INSERT INTO "+TABLE_UNIQUE_DEVICE_ID_BYDAY +"(deviceid,event_date) SELECT DISTINCT deviceid,'%s' FROM "+TABLE_DEVICE_ID+" WHERE date_format(event_datetime,'%%Y-%%m-%%d')='%s'"
     #print base_sqls %(dtstr,dtstr)

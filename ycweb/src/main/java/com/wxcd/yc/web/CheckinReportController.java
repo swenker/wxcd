@@ -4,10 +4,8 @@ import com.wxcd.yc.DatetimeUtil;
 import com.wxcd.yc.model.DeviceCounter;
 import com.wxcd.yc.service.CheckinDataStatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.RequestEntity;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,8 +41,12 @@ public class CheckinReportController {
     @RequestMapping(value = "/all",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<DeviceCounterListVO> getAllAndUniqueCounters(){
 
+        MultiValueMap<String,String>reponseHeaders = new HttpHeaders();
+        reponseHeaders.add("Access-Control-Allow-Origin","*");
         return new ResponseEntity<>(
-                new DeviceCounterListVO(checkinDataStatisticsService.getAllDeviceCounters()), HttpStatus.OK);
+                new DeviceCounterListVO(checkinDataStatisticsService.getAllDeviceCounters()),
+                reponseHeaders,
+                HttpStatus.OK);
     }
 
     @RequestMapping(value = "/counterbyday", method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
