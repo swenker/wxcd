@@ -11,7 +11,7 @@ var d3: any=require('d3');
 
 export class DeviceCounterComponent{
 
-    constructor():void {
+    constructor(){
         this.drawSvg();
 
     }
