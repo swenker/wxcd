@@ -64,4 +64,13 @@ public class CheckinReportControllerTest {
                 .andExpect(content().string("abc"))
                 ;
     }
+
+    @Test
+    public void testGetMonthCounter()throws Exception{
+        mockMvc.perform(get("/ckp/monthcounter?dt=2016-11").accept(MediaType.parseMediaType("application/json;charset=UTF-8")))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().string("abc"));
+
+    }
 }

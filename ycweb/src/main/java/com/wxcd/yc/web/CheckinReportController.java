@@ -68,8 +68,12 @@ public class CheckinReportController {
     @RequestMapping(value = "/monthcounter", method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 //    public ResponseEntity<String> getAllAndUniqueCountersOfMonth(@RequestParam(name="dt",required = false) String dt) {
     public ResponseEntity<DeviceCounterListVO> getAllAndUniqueCountersOfMonth(@RequestParam String dt) {
+
+        MultiValueMap<String,String>reponseHeaders = new HttpHeaders();
+        reponseHeaders.add("Access-Control-Allow-Origin","*");
+
         List<DeviceCounter>dclist= checkinDataStatisticsService.getDeviceCountersByMonth(dt);
-        return new ResponseEntity<>(new DeviceCounterListVO(dclist),HttpStatus.OK);
+        return new ResponseEntity<>(new DeviceCounterListVO(dclist),reponseHeaders,HttpStatus.OK);
     }
 
     class DeviceCounterListVO{

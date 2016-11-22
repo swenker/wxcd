@@ -1,4 +1,5 @@
-import { Component } from "@angular/core";
+import { Component,OnInit,OnDestroy } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
 
 var d3: any=require('d3');
 
@@ -9,15 +10,41 @@ var d3: any=require('d3');
     styleUrls:     ['device-counter.component.css']
 })
 
-export class DeviceCounterComponent{
+export class DeviceCounterComponent implements OnInit,OnDestroy{
 
-    constructor(){
-        this.drawSvg();
+    private subscription: Subscription;
+    private month: string;
+
+    constructor(private route: ActivatedRoute){
 
     }
 
+    ngOnInit(){
+        //queryParams does not work. but this params worked.
+        this.subscription = this.route.params.subscribe(param => {
+//                 console.log(param);
+                 this.month = param['month'];
+//                 console.log(month);
+                 if(this.month){
+                     this.drawSvg(this.month);
+                 }
+             }
+         );
+         //The code here only execute once.
+//        console.log(this.month);
+//        this.drawSvg(this.month);
+    }
 
-    private drawSvg():void{
+    ngOnDestroy(){
+      this.subscription.unsubscribe();
+    }
+
+
+
+    private drawSvg(month:string):void{
+
+        //d3.selectAll("svg > *").remove();
+        d3.select("svg").selectAll("*").remove();
         var margin = {top: 20, right: 20, bottom: 80, left: 40},
             width = 1200 - margin.left - margin.right,
             height = 400 - margin.top - margin.bottom;
@@ -37,13 +64,14 @@ export class DeviceCounterComponent{
             .orient("left")
             .tickFormat(d3.format(".2s"));
 
-        var svg = d3.select("body").append("svg")
-            .attr("width", width + margin.left + margin.right)
+//        var svg = d3.select("body").append("svg");
+        var svg = d3.select("svg");
+            svg.attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-        d3.json("http://localhost:8080/ycweb-1.0/ckp/all", function(error, data) {
+        d3.json("http://localhost:8080/ycweb-1.0/ckp/monthcounter?dt="+month, function(error, data) {
           if (error) throw error;
 
           data = data.dclist;

@@ -12,25 +12,38 @@ import { AppComponent } from './app.component';
 import { MenuComponent } from './menu.component';
 import { BarChartComponent } from "./bar-chart.component";
 import { DeviceCounterComponent} from "./device-counter.component";
+import { WelcomeComponent} from "./welcome.component";
 
 
 @NgModule({
   imports:[
     BrowserModule,
-    FormsModule/*,
+    FormsModule,
     RouterModule.forRoot([
       {
-        path: "menu",
-        component: MenuComponent
+        path: "mplot",
+        component: DeviceCounterComponent
+      },
+
+      {
+        path: "",
+        redirectTo: '/welcome',
+        pathMatch:  'full'
+      },
+
+      {
+        path: "welcome",
+        component: WelcomeComponent
       }
-    ])*/
+    ])
   ],
 
   declarations: [
     AppComponent,
     MenuComponent,
     BarChartComponent,
-    DeviceCounterComponent
+    DeviceCounterComponent,
+    WelcomeComponent
    ],
 
   bootstrap:    [ AppComponent ]

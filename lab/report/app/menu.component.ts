@@ -1,5 +1,5 @@
 
-import { Component } from "@angular/core";
+import { Component,OnInit } from "@angular/core";
 
 
 /*  */
@@ -11,6 +11,14 @@ import { Component } from "@angular/core";
 })
 
 
-export class MenuComponent{
+export class MenuComponent implements OnInit{
+    monthList:string[]=[];
+
+    ngOnInit():void {
+        this.monthList = [
+            '2016-10','2016-11'
+        ];
+
+    }
 
 }

@@ -1,7 +1,11 @@
 
     <h2>Dates And Month </h2>
     <nav>
-        <div><a href="/auplot">2016-10</a></div>
+        <div>
+            <a *ngFor="let month of monthList " [routerLink] ="['/mplot',{month:month}]"><div>{{month}}</div></a>
+        </div>
     </nav>
+
+
 
 
