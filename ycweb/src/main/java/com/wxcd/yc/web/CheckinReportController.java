@@ -2,6 +2,7 @@ package com.wxcd.yc.web;
 
 import com.wxcd.yc.DatetimeUtil;
 import com.wxcd.yc.model.DeviceCounter;
+import com.wxcd.yc.model.SimpleDeviceCounter;
 import com.wxcd.yc.service.CheckinDataStatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -57,6 +58,23 @@ public class CheckinReportController {
         return new ResponseEntity<>(new DeviceCounterListVO(dclist),HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/allcounterbyweekofyear", method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<SimpleDeviceCounterListVO> getAllCounterByWeekOfYear(@RequestParam(name="year",required = false) String year) {
+
+        List<SimpleDeviceCounter>dclist= checkinDataStatisticsService.getAllCounterByWeekOfYear(year);
+
+        return new ResponseEntity<>(new SimpleDeviceCounterListVO(dclist),HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/allcounterbymonthofyear", method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<SimpleDeviceCounterListVO> getAllCounterByMonthOfYear(@RequestParam(name="year",required = false) String year) {
+
+        List<SimpleDeviceCounter>dclist= checkinDataStatisticsService.getAllCounterByMonthOfYear(year);
+
+        return new ResponseEntity<>(new SimpleDeviceCounterListVO(dclist),HttpStatus.OK);
+    }
+
+
     @RequestMapping(value = "/weekcounterbyday", method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<DeviceCounterListVO> getAllAndUniqueCountersOfWeek(@RequestParam(name="dt",required = false) String dt) {
 
@@ -84,6 +102,18 @@ public class CheckinReportController {
         }
 
         public List<DeviceCounter> getDclist() {
+            return dclist;
+        }
+    }
+
+    class SimpleDeviceCounterListVO{
+        private List<SimpleDeviceCounter> dclist;
+
+        public SimpleDeviceCounterListVO(List<SimpleDeviceCounter> dclist) {
+            this.dclist = dclist;
+        }
+
+        public List<SimpleDeviceCounter> getDclist() {
             return dclist;
         }
     }

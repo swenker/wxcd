@@ -2,10 +2,12 @@ package com.wxcd.yc.repository;
 
 import com.wxcd.yc.DateRangeObject;
 import com.wxcd.yc.model.DeviceCounter;
+import com.wxcd.yc.model.SimpleDeviceCounter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
 import java.util.List;
 
 /**
@@ -33,6 +35,16 @@ public class CheckinDataRepositoryImpl implements CheckinDataRepository {
                     .build();
         });
     }
+
+    private List<SimpleDeviceCounter> getSimpleCounterList(String sql){
+        return jdbcTemplate.query(sql,(resultSet,rowNum)->{
+            return SimpleDeviceCounter.Builder.create()
+                    .setCounter(resultSet.getInt("devices_counter"))
+                    .setEventTime(resultSet.getString("event_time"))
+                    .build();
+        });
+    }
+
 
     @Override
     public List<DeviceCounter> getDeviceCounters() {
@@ -91,5 +103,19 @@ public class CheckinDataRepositoryImpl implements CheckinDataRepository {
 
         return this.getDeviceCountersList(sql);
 
+    }
+
+    @Override
+    public List<SimpleDeviceCounter> getAllCounterByWeekOfYear(String year) {
+        String sql = "select event_week as event_time,all_counter as devices_counter from devices_counter_byweek where event_week like'"+year+"%'";
+
+        return this.getSimpleCounterList(sql);
+    }
+
+    @Override
+    public List<SimpleDeviceCounter> getAllCounterByMonthOfYear(String year) {
+        String sql = "select event_month as event_time,all_counter as devices_counter from devices_counter_bymonth where event_month like'"+year+"%'";
+
+        return this.getSimpleCounterList(sql);
     }
 }

@@ -1,6 +1,7 @@
 package com.wxcd.yc.service;
 
 import com.wxcd.yc.model.DeviceCounter;
+import com.wxcd.yc.model.SimpleDeviceCounter;
 
 import java.util.List;
 
@@ -14,6 +15,9 @@ public interface CheckinDataStatisticsService {
 
     public List<DeviceCounter> getDeviceCountersByWeek(String dateStr);
     public List<DeviceCounter> getDeviceCountersByDay(String dateStr);
+
+    public List<SimpleDeviceCounter> getAllCounterByWeekOfYear(String year);
+    public List<SimpleDeviceCounter> getAllCounterByMonthOfYear(String year);
 
 
 }

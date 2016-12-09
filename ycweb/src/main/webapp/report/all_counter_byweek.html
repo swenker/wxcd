@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+body { font: 12px Arial;}
+
+    /* tell the SVG path to be a thin blue line without any area fill */
+    path {
+        stroke-width: 1;
+        fill: none;
+    }
+
+    .data1 {
+        /*stroke: steelblue;*/
+        stroke: #ff8c00;
+    }
+
+    .axis {
+      shape-rendering: crispEdges;
+      display: block;
+    }
+
+    .x.axis line {
+      stroke: lightgrey;
+    }
+
+    .x.axis .minor {
+      stroke-opacity: .5;
+    }
+
+    .x.axis path {
+      display: block;
+    }
+
+    .x.axis text {
+        font: 12px Arial;
+    }
+
+    .y.axis line, .y.axis path {
+      fill: none;
+      stroke: #000;
+    }
+
+    .y.axis text {
+        font: 12px Arial;
+    }
+
+    .y.axisRight text {
+        fill: orange;
+    }
+
+    .y.axisLeft text {
+        fill: steelblue;
+    }
+
+
+    circle {
+      fill: #ccc;
+      stroke: #777;
+      stroke-width: 1px;
+    }
+
+</style>
+<body>
+<script src="../vendors/d3/d3.v3.min.js"></script>
+<script>
+
+var margin = {top: 20, right: 20, bottom: 80, left: 40},
+    width = 1200 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
+
+var x0 = d3.scale.ordinal().rangeRoundBands([0, width], 1); //if .1 the line will not be aligned with date y axis
+
+var y0 = d3.scale.linear().range([height, 0]);
+
+var color = d3.scale.ordinal().range(["#ff8c00", "#a05d56"]);
+
+var xAxis = d3.svg.axis()
+    .scale(x0)
+    .orient("bottom").tickSize(-height).tickSubdivide(true);
+
+var yAxis = d3.svg.axis()
+    .scale(y0)
+    .orient("left")
+    .tickFormat(d3.format(".2s"));
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+d3.json("/ycweb-1.0/ckp/allcounterbyweekofyear?year=2016", function(error, data) {
+  if (error) throw error;
+
+  data = data.dclist;
+
+  x0.domain(data.map(function(d) { return d.eventTime; }));
+  y0.domain([0, d3.max(data, function(d) { return d.counter; })]);
+
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis)
+      .selectAll("text")  
+      .style("text-anchor", "end")
+      .attr("transform", "rotate(-65)" );
+	  ;
+
+  svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+      .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("Device Counter");
+
+  //What's the usage of this part?
+  var state = svg.selectAll(".state")
+      .data(data)
+      .enter().append("g")
+      .attr("class", "state")
+      .attr("transform", function(d) { return "translate(" + x0(d.eventTime) + ",0)"; })
+	  ;
+
+    // create a line function that can convert data[] into x and y points
+    var line = d3.svg.line()
+        .x(function(d) {
+            return x0(d.eventTime);
+        })
+        .y(function(d) {
+            return y0(d.counter);
+		})
+
+    // add lines
+    //bind data: do this AFTER the axes above so that the line is above the tick-lines
+    //state.append("svg:path").attr("d", line1(data)).attr("class", "data1");
+    svg.append("svg:path").attr("d", line(data)).attr("class", "data1");
+
+    var circle0 = svg.selectAll("circle")
+          .data(data)
+          .enter().append("circle")
+          .attr("cx", function(d, i) { return x0(d.eventTime); })
+          .attr("cy", function(d, i) { return y0(d.counter); })
+          .attr("r", 3);
+
+////////////////////////
+
+    svg.selectAll("circle.text0")
+          .data(data)
+          .enter().append("text")
+          .attr("x", function(d) { return x0(d.eventTime); })
+          .attr("y", function(d) { return y0(d.counter); })
+          .text(function(d) { return d.counter; });
+
+});
+
+</script>
