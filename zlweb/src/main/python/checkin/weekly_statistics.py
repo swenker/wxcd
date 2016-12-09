@@ -28,7 +28,7 @@ class WeeklyStatistics():
         return result[0]
 
     def save_counter_to_db(self,month_week,unique_counter,all_counter):
-        sqls = "INSERT INTO %s (event_month,unique_counter,all_counter) VALUES('%s',%d,%d)"
+        sqls = "INSERT INTO %s (event_week,unique_counter,all_counter) VALUES('%s',%d,%d)"
         sqls = sqls %(TABLE_DEVICES_COUNTER_BYWEEK,month_week,unique_counter,all_counter)
         self.cursor.execute(sqls)
 
@@ -44,8 +44,8 @@ class WeeklyStatistics():
         unique_counter = self.get_unique_counter_of_week(last_week)
         all_counter = self.get_all_counter_of_week(last_week)
 
-        print month_week,unique_counter,all_counter
-        # self.save_counter_to_db(month_week,unique_counter,all_counter)
+        # print month_week,unique_counter,all_counter
+        self.save_counter_to_db(month_week,unique_counter,all_counter)
 
 
 if __name__ == "__main__":

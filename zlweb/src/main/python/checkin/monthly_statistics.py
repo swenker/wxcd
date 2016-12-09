@@ -42,9 +42,8 @@ class MonthlyStatistics():
         unique_counter = self.get_unique_counter_of_month(month)
         all_counter = self.get_all_counter_of_month(month)
 
-        print month,unique_counter,all_counter
-
-        # self.save_counter_to_db(month,unique_counter,all_counter)
+        # print month,unique_counter,all_counter
+        self.save_counter_to_db(month,unique_counter,all_counter)
 
 
 if __name__ == "__main__":
