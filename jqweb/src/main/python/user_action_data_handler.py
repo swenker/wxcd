@@ -29,7 +29,7 @@ class DataParser:
         print datetime.datetime.now()
 
     def parse_datafile(self,datafile):
-        # print datafile
+        print "------------------------------------"+datafile
         'PARSE USERID FROM FILENAME :0AB6BBBEDFF24EC8BAAC905F45AE314C_2012-05-08_17-23-35.txt'
         filename = datafile.split(os.path.sep)[-1]
         userid = filename.split('_')[0]
@@ -51,6 +51,7 @@ class DataParser:
             action_last_seconds=None
             action_startup_time=None
             for line in df:
+                line=line.strip()
                 if line.startswith('Last<=>'):
                    action_last_seconds=int(line.split('<=>')[1])
                    continue
@@ -162,6 +163,6 @@ if __name__ == '__main__':
     import sys
     if len(sys.argv)>1:
         folder=sys.argv[1]
-        
+
     data_parser.handler_all_files(folder)
     db.close()
