@@ -17,3 +17,5 @@ CREATE TABLE stock(
     instock INT NOT NULL
 )ENGINE=innodb DEFAULT CHARSET=UTF8;
 
+巨阙与（承影、纯钧、鱼肠、泰阿、湛泸、龙渊、工布），合称为“八荒名剑”。
+（湛卢、纯钧、胜邪、鱼肠、巨阙）并称越五剑。
