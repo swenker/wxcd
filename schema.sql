@@ -2,7 +2,7 @@ CREATE DATABASE `test_user_action`;
 
 USE test_user_action;
 CREATE TABLE `user_profile`(
-    userid CHAR(34) NOT NULL,
+    userid CHAR(32) NOT NULL,
     gender TINYINT,
     birthyear int,
     edu TINYINT,
@@ -34,9 +34,6 @@ CREATE TABLE `action_item`(
     190 "高中/中专/技校"
 
          1 "JOB"
-   144
-
-
    144 "专业技术人员"
     96 "个体户/自由职业者"
     31 "产业、服务业工人"
@@ -65,7 +62,4 @@ CREATE TABLE `action_item`(
    148 "无收入"
 
         1 "ISCITY"
-   160 "unknown"
-   127 "乡村"
-   640 "城市"
-    73 "城郊"
+   160 "unknown":1,"乡村":2,"城市":3,"城郊":4

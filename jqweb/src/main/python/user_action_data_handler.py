@@ -5,16 +5,15 @@ import MySQLdb
 import os
 import re
 import datetime
+import codecs
 
 TABLE_USER_PROFILE='user_profile'
-TABLE_USER_ACTION='action_item'
+TABLE_USER_ACTION='action_item2'
 EVENT_SHUTDOWN='shutdown'
 EVENT_STARTUP='startup'
 
 db = MySQLdb.connect(host="127.0.0.1",user="root",passwd="nopass",db="test_user_action",charset="utf8")
 class DataParser:
-
-
     def handler_all_files(self,folder):
         print datetime.datetime.now()
         subfolder_list = os.listdir(folder)
@@ -35,7 +34,8 @@ class DataParser:
         userid = filename.split('_')[0]
         #print userid
 
-        with open(datafile) as df:
+        # with open(datafile) as df:
+        with codecs.open(datafile,mode='r',encoding="UTF-8") as df:
             action_list = []
             user_action_holder = UserActionHolder()
             user_action_holder.userid = userid
@@ -129,11 +129,17 @@ class DataRepository:
             for action_item in action_list:
                 try:
                     workable_sqls = base_sqls
-                    workable_sqls += "('%s','%s',%d,'%s','%s')" \
-                                  %(action_holder.userid,action_item.event_time,action_item.relative_seconds,action_item.prog_name,action_item.prog_args)
-                    cursor.execute(workable_sqls)
+                    workable_sqls+= "(%s,%s,%s,%s,%s)"
+                    # workable_sqls += "('%s','%s',%d,'%s','%s')" \
+                    #               %(action_holder.userid,action_item.event_time,action_item.relative_seconds,
+                    #                 MySQLdb.escape_string(action_item.prog_name),MySQLdb.escape_string(action_item.prog_args))
+                    # http://mysql-python.sourceforge.net/MySQLdb.html
+                    cursor.execute(workable_sqls,(action_holder.userid,action_item.event_time,action_item.relative_seconds,action_item.prog_name,action_item.prog_args))
                 except BaseException,e:
-                    print e
+                    # print workable_sqls
+                    print "ERROR:"+action_item.prog_args
+                    # print e
+                    # raise e
         cursor.close()
 
     def save_to_db2(self,action_holder):
@@ -143,6 +149,7 @@ class DataRepository:
         base_sqls += "('%s','%s',%d,'%s','%s')" %(action_holder.userid,action_holder.startup_time,0,EVENT_STARTUP,'')
         if(action_holder.shutdown_time):
             base_sqls +=",('%s','%s',%d,'%s','%s')" %(action_holder.userid,action_holder.shutdown_time,action_holder.action_last_seconds,EVENT_SHUTDOWN,'')
+
         if len(action_list):
             value_part = ''
             for action_item in action_list:
@@ -157,6 +164,13 @@ class DataRepository:
         cursor.close()
 
 
+def test_single_file():
+    data_parser = DataParser()
+    data_repository = DataRepository()
+    # user_action_holder = data_parser.parse_datafile(r'C:\Users\wenjusun\Downloads\dataset_616718\data\behavior\2012-06-05\B6225444F2560BA859C24A14CCD9769C_2012-06-05_08-12-10.txt')
+    user_action_holder = data_parser.parse_datafile(r'C:\Users\wenjusun\Downloads\dataset_616718\data\behavior\2012-05-07\11947D63A74B417AEE8633FABE44DD63_2012-05-07_05-58-33.txt')
+    data_repository.save_to_db(user_action_holder)
+
 if __name__ == '__main__':
     data_parser = DataParser()
     folder = r'C:\Users\wenjusun\Downloads\dataset_616718\data\behavior'
@@ -165,4 +179,5 @@ if __name__ == '__main__':
         folder=sys.argv[1]
 
     data_parser.handler_all_files(folder)
+    # test_single_file()
     db.close()
