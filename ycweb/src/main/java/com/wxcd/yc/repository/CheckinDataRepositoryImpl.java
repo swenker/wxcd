@@ -107,14 +107,14 @@ public class CheckinDataRepositoryImpl implements CheckinDataRepository {
 
     @Override
     public List<SimpleDeviceCounter> getAllCounterByWeekOfYear(String year) {
-        String sql = "select event_week as event_time,all_counter as devices_counter from devices_counter_byweek where event_week like'"+year+"%'";
+        String sql = "select event_week as event_time,all_counter as devices_counter from devices_counter_byweek where event_week like'"+year+"%' ORDER BY event_week";
 
         return this.getSimpleCounterList(sql);
     }
 
     @Override
     public List<SimpleDeviceCounter> getAllCounterByMonthOfYear(String year) {
-        String sql = "select event_month as event_time,all_counter as devices_counter from devices_counter_bymonth where event_month like'"+year+"%'";
+        String sql = "select event_month as event_time,all_counter as devices_counter from devices_counter_bymonth where event_month like'"+year+"%' ORDER BY event_month";
 
         return this.getSimpleCounterList(sql);
     }

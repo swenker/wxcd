@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+body { font: 12px Arial;}
+.axis {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+</style>
+<body>
+<script src="../vendors/d3/d3.v3.min.js"></script>
+<script>
+
+var margin = {top: 20, right: 20, bottom: 80, left: 40},
+    width = 1200 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
+
+var x0 = d3.scale.ordinal().rangeRoundBands([0, width], .1); //if .1 the line will not be aligned with date y axis it's outerpadding
+//https://github.com/d3/d3-3.x-api-reference/blob/master/Ordinal-Scales.md#ordinal_rangeRoundBand,it conrole the width of column. the larger,the slicer.
+
+var y0 = d3.scale.linear().range([height, 0]);
+
+var xAxis = d3.svg.axis()
+    .scale(x0)
+    .orient("bottom").tickSize(-height).tickSubdivide(true);
+
+var yAxis = d3.svg.axis()
+    .scale(y0)
+    .orient("left")
+    .tickFormat(d3.format(".2s"));
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+d3.json("/ycweb-1.0/ckp/allcounterbyweekofyear?year=2016", function(error, data) {
+  if (error) throw error;
+
+  data = data.dclist;
+
+  x0.domain(data.map(function(d) { return d.eventTime; }));
+  y0.domain([0, d3.max(data, function(d) { return d.counter; })]);
+
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis)
+      .selectAll("text")  
+      .style("text-anchor", "end")
+      .attr("transform", "rotate(-65)" );
+	  ;
+
+  svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+      .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("Device Counter");
+
+  svg.selectAll("bar")
+      .data(data)
+      .enter().append("rect")
+      .attr("width", x0.rangeBand())
+      .attr("x", function(d) { return x0(d.eventTime); })
+      .attr("y", function(d) { return y0(d.counter); })
+      .attr("height", function(d) { return height - y0(d.counter); })
+      .style("fill", "steelblue");
+
+});
+
+</script>
