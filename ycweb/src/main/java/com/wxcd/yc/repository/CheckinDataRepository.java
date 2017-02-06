@@ -11,6 +11,7 @@ import java.util.List;
  */
 public interface CheckinDataRepository {
     public List<DeviceCounter> getDeviceCounters();
+    public List<DeviceCounter> getDeviceCountersByYear(String year);
 
     public List<DeviceCounter> getDeviceCountersOfMonth(String yearMonth);
 

@@ -49,6 +49,16 @@ public class CheckinReportController {
                 reponseHeaders,
                 HttpStatus.OK);
     }
+    @RequestMapping(value = "/allbyyear",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<DeviceCounterListVO> getAllAndUniqueCountersByYear(@RequestParam(name="year",required = false) String year){
+
+        MultiValueMap<String,String>reponseHeaders = new HttpHeaders();
+        reponseHeaders.add("Access-Control-Allow-Origin","*");
+        return new ResponseEntity<>(
+                new DeviceCounterListVO(checkinDataStatisticsService.getAllDeviceCountersByYear(year)),
+                reponseHeaders,
+                HttpStatus.OK);
+    }
 
     @RequestMapping(value = "/counterbyday", method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<DeviceCounterListVO> getAllAndUniqueCountersOfDay(@RequestParam(name="dt",required = false) String dt) {

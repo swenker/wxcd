@@ -28,6 +28,11 @@ public class CheckinDataStatisticsServiceImpl implements CheckinDataStatisticsSe
     }
 
     @Override
+    public List<DeviceCounter> getAllDeviceCountersByYear(String year) {
+        return checkinDataRepository.getDeviceCountersByYear(year);
+    }
+
+    @Override
     public List<DeviceCounter> getDeviceCountersByMonth(String yearMonth) {
 
         return checkinDataRepository.getDeviceCountersOfMonth(yearMonth);

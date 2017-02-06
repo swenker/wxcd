@@ -75,6 +75,14 @@ public class CheckinDataRepositoryImpl implements CheckinDataRepository {
         return this.getDeviceCountersList(sql);
     }
 
+    @Override
+    public List<DeviceCounter> getDeviceCountersByYear(String year) {
+
+        String sql = "SELECT event_date,all_counter,unique_counter FROM devices_counter_byday WHERE DATE_FORMAT(event_date,'%Y')='"+year+"' ORDER BY event_date";
+
+        return this.getDeviceCountersList(sql);
+    }
+
 
     @Override
     public List<DeviceCounter> getDeviceCountersOfMonth(String yearMonth) {
